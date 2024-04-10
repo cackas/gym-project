@@ -8,6 +8,6 @@ export function Home() {
         <li><Link to='/training'>Training</Link></li>
         <li><Link to='/calendar'>Calendar</Link></li>
         <li><Link to='/settings'>Settings</Link></li>
-      </ul>    
+      </ul>
     )
 }

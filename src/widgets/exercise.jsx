@@ -12,7 +12,6 @@ export function Exercise({ exs, ex, setExs }) {
 					setExs(exs.filter(el => el!==ex)
 					)}			
 			><CircleX /></button>
-
 		</div>
 	)
 }
