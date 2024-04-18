@@ -14,23 +14,18 @@ export function Form({setExs,setIsForm}) {
 		setExs((prev)=>[...prev, {id: prev.length+1, ...data}])
 		setIsForm((prev)=> !prev)
 	}
-
 	return (
 		<form className={styles.form} onSubmit={(e)=>{
 			addExs(e)}
 		}>
-				<input placeholder="title" onChange={e=>setData(prev=>(
-					{...prev, title: e.target.value}
-				))} name={data.title}/>
-				<input placeholder="weight" onChange={e=>setData(prev=>(
-					{...prev, weight: e.target.value}
-				))} name={data.weight} />
-				<input placeholder="sets" onChange={e=>setData(prev=>(
-					{...prev, sets: e.target.value}
-				))} name={data.sets} />
-				<input placeholder="reps" onChange={e=>setData(prev=>(
-					{...prev, reps: e.target.value}
-				))} name={data.reps} />
+				{									
+					Object.keys(data).map((atr, ind)=>(						
+						<input key={ind} placeholder={atr} name={atr}  onChange={e=>setData(prev=>(
+							{...prev, [atr]: e.target.value}
+						))} />
+					))
+				}
+			
 				<input className={styles.submit} type="submit" value="Add" />
 			
 		</form>
