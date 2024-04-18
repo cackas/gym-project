@@ -1,12 +1,19 @@
-import { useState } from "react"
-import { exercises } from "../../data/exercises"
+import { useEffect, useState } from "react"
 import { Exercise } from "../../widgets/exercise"
 import { Form } from "../../widgets/form"
 import { CirclePlus } from 'lucide-react';
+import { dataService } from "../../services/dataStorage";
 
 export function Training() {
-	let [exs, setExs] = useState(exercises)
-	let [isForm, setIsForm] = useState(false)
+	const data = new dataService()
+		
+	const [exs,setExs]=useState(data.getData())
+	const [isForm, setIsForm] = useState(false)
+
+	useEffect(()=>{
+		data.setData(exs)
+	},[exs])
+
 	return (
 		<>
 			{exs.length !== 0 ? 
@@ -17,10 +24,10 @@ export function Training() {
 				)
 			}
 			<button className="add-widget">
-				<CirclePlus onClick={()=> setIsForm(isForm=!isForm)}/>
+				<CirclePlus onClick={()=> setIsForm(!isForm)}/>
 			</button>
 
-			{isForm && <Form setIsForm={setIsForm} setExs={setExs} />}
+			{isForm && <Form exs={exs} setIsForm={setIsForm} setExs={setExs} />}
 		</>		
 	)
 }
