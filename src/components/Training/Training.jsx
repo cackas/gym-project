@@ -1,33 +1,36 @@
-import { useEffect, useState } from "react"
 import { Exercise } from "../../widgets/exercise"
-import { Form } from "../../widgets/form"
+import { Form } from "../../widgets/form";
 import { CirclePlus } from 'lucide-react';
-import { dataService } from "../../services/dataStorage";
+import { dataService } from "../../services/dataService";
+import { useQuery } from '@tanstack/react-query'
+import { useState } from "react";
 
 export function Training() {
-	const data = new dataService()
-		
-	const [exs,setExs]=useState(data.getData())
+
+	const { isPending, data } = useQuery({
+		queryKey: ['exs'],
+		queryFn: dataService.getApiData
+	})
 	const [isForm, setIsForm] = useState(false)
 
-	useEffect(()=>{
-		data.setData(exs)
-	},[exs])
-
 	return (
+		
 		<>
-			{exs.length !== 0 ? 
-				(exs.map( (ex) => (
-					<Exercise key={ex.id} exs={exs} ex={ex} setExs={setExs} />
+			{	isPending ? <h2>Loading...</h2> :
+				data.length !== 0 ?
+				(data.map( (ex) => (
+					<Exercise key={ex.id} ex={ex}/>
 				))) : (
 					<div className="add-exs">Добавьте упражнение</div>
 				)
 			}
 			<button className="add-widget">
-				<CirclePlus onClick={()=> setIsForm(!isForm)}/>
+				<CirclePlus onClick={()=> {
+					setIsForm(!isForm)
+					}}/>
 			</button>
+			{isForm && <Form setIsForm={setIsForm} />}
 
-			{isForm && <Form exs={exs} setIsForm={setIsForm} setExs={setExs} />}
 		</>		
 	)
 }
